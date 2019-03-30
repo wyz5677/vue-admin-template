@@ -9,11 +9,21 @@ const service = axios.create({
   timeout: 5000 // 请求超时时间
 })
 
+// 这里说一下token，一般是在登录完成之后，将用户的token通过localStorage或者cookie存在本地，
+// 然后用户每次在进入页面的时候（即在main.js中），会首先从本地存储中读取token，如果token存在说明用户已经登陆过
+// ，则更新vuex中的token状态。然后，在每次请求接口的时候，都会在请求的header中携带token，
+// 后台人员就可以根据你携带的token来判断你的登录是否过期，如果没有携带，则说明没有登录过。
+// 这时候或许有些小伙伴会有疑问了，就是每个请求都携带token，那么要是一个页面不需要用户登录就可以访问的怎么办呢？
+// 其实，你前端的请求可以携带token，但是后台可以选择不接收啊！
+
 // request拦截器
 service.interceptors.request.use(
+  // 每次发送请求之前判断vuex中是否存在token
+  // 如果存在，则统一在http请求的header都加上token，这样后台根据token判断你的登录情况
+  // 即使本地存在token，也有可能token是过期的，所以在响应拦截器中要对返回状态进行判断
   config => {
     if (store.getters.token) {
-      config.headers['X-Token'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+      config.headers['X-Token'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改 ['X-Token']是自定义的 应该是和后台约定好的
     }
     return config
   },
@@ -24,7 +34,10 @@ service.interceptors.request.use(
   }
 )
 
-// response 拦截器
+// 响应拦截器很好理解，就是服务器返回给我们的数据，我们在拿到之前可以对他进行一些处理。
+// 例如上面的思想：如果后台返回的状态码是200，则正常返回数据，否则的根据错误的状态码类型进行一些我们需要的错误，
+// 其实这里主要就是进行了错误的统一处理和没登录或登录过期后调整登录页的一个操作。
+
 service.interceptors.response.use(
   response => {
     /**

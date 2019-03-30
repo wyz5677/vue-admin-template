@@ -24,17 +24,23 @@ const user = {
     }
   },
 
+  // {commit}直接把commit对象传递过来
   actions: {
     // 登录
     Login({ commit }, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
+        // 调用登陆方法去验证
         login(username, userInfo.password).then(response => {
           const data = response.data
+          // 后台会返回一个token,用cookie把token存起来
           setToken(data.token)
+          // 在vuex中也保留一份
           commit('SET_TOKEN', data.token)
+          // 成功执行这里
           resolve()
         }).catch(error => {
+          // 失败或者抛出异常执行这里
           reject(error)
         })
       })
@@ -44,6 +50,7 @@ const user = {
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         getInfo(state.token).then(response => {
+          console.log('res', response)
           const data = response.data
           if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', data.roles)

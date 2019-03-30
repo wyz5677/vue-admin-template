@@ -1,5 +1,6 @@
 <template>
   <div class="login-container">
+    <!--auto-complete是自动补全功能  -->
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <h3 class="title">vue-admin-template</h3>
       <el-form-item prop="username">
@@ -79,6 +80,7 @@ export default {
     }
   },
   methods: {
+    // 登陆明暗文转换
     showPwd() {
       if (this.pwdType === 'password') {
         this.pwdType = ''
@@ -86,10 +88,12 @@ export default {
         this.pwdType = 'password'
       }
     },
+    // .catch的用法 如果验证成功 但是因为其他原因失败就会进入catch
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
+          // vuex的actions存法 存取Login,参数是this.loginForm
           this.$store.dispatch('Login', this.loginForm).then(() => {
             this.loading = false
             this.$router.push({ path: this.redirect || '/' })
@@ -145,6 +149,7 @@ $bg:#2d3a4b;
 $dark_gray:#889aa4;
 $light_gray:#eee;
 .login-container {
+  //生成绝对定位的元素，相对于浏览器窗口进行定位。
   position: fixed;
   height: 100%;
   width: 100%;

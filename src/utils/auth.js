@@ -13,3 +13,5 @@ export function setToken(token) {
 export function removeToken() {
   return Cookies.remove(TokenKey)
 }
+
+// js-cookie是一个npm包

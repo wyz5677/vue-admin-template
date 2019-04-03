@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <!-- 使用ele中的全局v-loading  使用element-loading-text来设定Loading时候显示的内容 列的宽度是自撑开（其实默认就是true） 高亮当前行-->
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -29,6 +30,7 @@
       </el-table-column>
       <el-table-column class-name="status-col" label="Status" width="110" align="center">
         <template slot-scope="scope">
+          <!-- 过滤器 -->
           <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
         </template>
       </el-table-column>
@@ -47,6 +49,7 @@ import { getList } from '@/api/table'
 
 export default {
   filters: {
+    // 第一个参数是值 也就是scope.row.status
     statusFilter(status) {
       const statusMap = {
         published: 'success',
@@ -68,6 +71,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
+      // 调用api去获取mock的数据
       getList(this.listQuery).then(response => {
         this.list = response.data.items
         this.listLoading = false

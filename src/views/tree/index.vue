@@ -1,7 +1,8 @@
+<!-- 这是elementui上的一个搜索树节点的方法 已浏览-->
 <template>
+
   <div class="app-container">
     <el-input v-model="filterText" placeholder="Filter keyword" style="margin-bottom:30px;" />
-
     <el-tree
       ref="tree2"
       :data="data2"
@@ -55,6 +56,7 @@ export default {
           label: 'Level two 3-2'
         }]
       }],
+      // props是配置选项 指定children为上面data2中的children
       defaultProps: {
         children: 'children',
         label: 'label'
@@ -62,6 +64,7 @@ export default {
     }
   },
   watch: {
+    // 当输入文字变化，调用树的filter方法来过滤
     filterText(val) {
       this.$refs.tree2.filter(val)
     }

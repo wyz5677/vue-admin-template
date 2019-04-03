@@ -28,6 +28,7 @@ export default {
     device() {
       return this.$store.state.app.device
     },
+    // 动态样式的渲染
     classObj() {
       return {
         hideSidebar: !this.sidebar.opened,

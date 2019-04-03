@@ -1,7 +1,9 @@
 <template>
   <div class="navbar">
     <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
+    <!-- 这里是面包屑 -->
     <breadcrumb />
+    <!-- 这里是登录头像和Home以及登出 -->
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
@@ -13,6 +15,7 @@
             Home
           </el-dropdown-item>
         </router-link>
+        <!-- divided是显示分割线 -->
         <el-dropdown-item divided>
           <span style="display:block;" @click="logout">LogOut</span>
         </el-dropdown-item>
@@ -38,9 +41,11 @@ export default {
     ])
   },
   methods: {
+    // 触发侧边bar
     toggleSideBar() {
       this.$store.dispatch('ToggleSideBar')
     },
+    // 登出
     logout() {
       this.$store.dispatch('LogOut').then(() => {
         location.reload() // 为了重新实例化vue-router对象 避免bug

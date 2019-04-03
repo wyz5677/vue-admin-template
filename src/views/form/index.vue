@@ -1,3 +1,4 @@
+<!-- from表单的普通使用 -->
 <template>
   <div class="app-container">
     <el-form ref="form" :model="form" label-width="120px">
@@ -11,6 +12,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="Activity time">
+        <!-- el-col是布局盒子 总共分为24份 -->
         <el-col :span="11">
           <el-date-picker v-model="form.date1" type="date" placeholder="Pick a date" style="width: 100%;"/>
         </el-col>
